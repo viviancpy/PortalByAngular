@@ -21,4 +21,7 @@ google.maps = google.maps || {};
   // BEGIN: move to resources/map.js
   // getScript("https://maps.gstatic.com/maps-api-v3/api/js/21/8/main.js");
   // END: move to resources/map.js
+  function googleMap(params){
+    console.log(params);
+  }
 })();
