@@ -70,9 +70,9 @@ angular.module('myApp.view1', ['ngRoute'])
             
     var loadJs = function (scriptResource) {
             var deferred = $q.defer();
-            $window.initialize = function () {
-                deferred.resolve();
-            };
+            // $window.initialize = function () {
+            //     deferred.resolve();
+            // };
             // thanks to Emil Stenström: http://friendlybit.com/js/lazy-loading-asyncronous-javascript/
             var load_script = function(){ 
                 var loadedScripts = document.getElementsByTagName('script');
@@ -101,10 +101,11 @@ angular.module('myApp.view1', ['ngRoute'])
                 // }
                 if (!scriptLoaded){
                     var s = document.createElement('script'); // use global document since Angular's $document is weak
-                    s.type = 'text/javascript';
                     s.src = scriptResource; // example: 'https://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize'
                     document.body.appendChild(s);
                 }
+
+                deferred.resolve();
             }
 
             if ($window.attachEvent) {  
@@ -120,8 +121,21 @@ angular.module('myApp.view1', ['ngRoute'])
     };
     return service;
 }])
-
-.factory('externalComponentService', ['$q', '$window', 'scriptLoadService', function externalComponentService($q, $window, scriptLoadService) {
+.factory('htmlLoadService', ['$http', function($http){
+    var loadHtml = function(url, callback){
+            $http.jsonp(url).success(function(data,status,headers,config) {
+              console.warn(data);
+              callback(data);
+            }).error(function(data, status,headers, config) {
+                console.log('error in jsonp');
+            });
+    }
+    var service = {
+        loadHtml: loadHtml
+    };
+    return service;
+}])
+.factory('externalComponentService', ['$q', '$window', 'scriptLoadService', 'htmlLoadService', function externalComponentService($q, $window, scriptLoadService, htmlLoadService) {
     var self = this;
     var loadedComponents = {};
     var service = {
@@ -148,13 +162,6 @@ angular.module('myApp.view1', ['ngRoute'])
 
                 $q.all(scriptResourcePromises).then(function (result){
                     loadedComponents[componentName] = scriptResources;
-                    // var f = new Function(componentName);
-                    // f({
-                    //     componentId: holderId, 
-                    //     latLng1: 44.5403, 
-                    //     latLng2: -78.5463, 
-                    //     zm: 12
-                    // });
                     console.log(loadedComponents);
                 }, function (error){
                     console.log('Failed loading all scriptResources. STOP loading.');
@@ -162,6 +169,9 @@ angular.module('myApp.view1', ['ngRoute'])
               
 
             }
+        },
+        loadHtml: function(htmlPath, callback){
+            return htmlLoadService.loadHtml(htmlPath, callback);
         }
     }
     return service;
@@ -178,7 +188,7 @@ angular.module('myApp.view1', ['ngRoute'])
             htmlPath: '=',
             stylePath: '='
         },
-        template: '<div ng-include="getContentUrl()"></div>',
+        template: '<div ng-include="getContentUrl()"" style="background-color:#b0c4de"></div>',
         link: function(scope, element, attrs){
             scope.getContentUrl = function() {
                 return scope.htmlPath;

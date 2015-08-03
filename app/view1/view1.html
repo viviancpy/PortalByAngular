@@ -3,12 +3,19 @@ Test
 <search-customer></search-customer>
 <account-summary></account-summary>
 <external-component-holder 
+	holder-id="'simpleCalculator1'" 
+	component-name="'simpleCalculator1'" 
+	script-resources="['externalComponents/simpleCalculator/scripts/simpleCalculator.js']"
+	html-path="'externalComponents/simpleCalculator/html/simpleCalculator.cshtml'"
+	style-path="">
+</external-component-holder>
+<!-- <external-component-holder 
 	holder-id="'googleMap1'" 
 	component-name="'googleMap'" 
 	script-resources="['externalComponents/googleMap/scripts/initialize.js','https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&callback=googleMap_initialize']"
 	html-path="'externalComponents/googleMap/html/map.cshtml'"
 	style-path="">
-</external-component-holder>
+</external-component-holder> -->
 <!-- <external-component-holder 
 	holder-id="'googleMap2'" 
 	component-name="'googleMap'" 
