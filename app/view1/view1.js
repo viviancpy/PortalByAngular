@@ -108,11 +108,12 @@ angular.module('myApp.view1', ['ngRoute'])
                 deferred.resolve();
             }
 
-            if ($window.attachEvent) {  
-                $window.attachEvent('onload', load_script); 
-            } else {
-                $window.addEventListener('load', load_script, false);
-            }
+            // if ($window.attachEvent) {  
+            //     $window.attachEvent('onload', load_script); 
+            // } else {
+            //     $window.addEventListener('load', load_script, false);
+            // }
+            load_script();
             return deferred.promise;
         }
 
@@ -194,13 +195,12 @@ angular.module('myApp.view1', ['ngRoute'])
                 return scope.htmlPath;
             }
             if (externalComponentService.isLoaded(scope.componentName)) {
-                console.log(scope.componentName.concat(' is already loaded'));
+                console.log(scope.componentName.concat(' is already loaded. Skip the load script process.'));
             }else{
-                console.log(scope.componentName.concat(' is not loaded'));
-
+                console.log(scope.componentName.concat(' is not loaded. Start loading scripts...'));
                 externalComponentService.loadScripts(scope.holderId, scope.componentName, scope.scriptResources);
-            }
-            
+                console.log(scope.componentName.concat(' is now loaded. Scripts loading ends.'));
+            }    
         }
     }
 }])

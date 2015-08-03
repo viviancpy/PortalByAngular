@@ -2,7 +2,8 @@
 Test
 <search-customer></search-customer>
 <account-summary></account-summary>
-<external-component-holder 
+<button ng-click="showSimpleCalculator=true">Show Component</button>
+<external-component-holder  ng-if="showSimpleCalculator"
 	holder-id="'simpleCalculator1'" 
 	component-name="'simpleCalculator1'" 
 	script-resources="['externalComponents/simpleCalculator/scripts/simpleCalculator.js']"
